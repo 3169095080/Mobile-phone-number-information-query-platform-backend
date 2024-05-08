@@ -1,0 +1,103 @@
+@startuml
+
+package org.example.phonelocatebackend.model.entity {
+    class PhoneLocationInfo {
+        - String phoneNumber
+        - String province
+        - String city
+        + getters/setters
+    }
+
+    class PhoneOperatorInfo {
+        - String phoneTopThreeNumber
+        - PhoneOperatorEnum operator
+        + getters/setters
+    }
+
+    class PhoneMarkerInfo {
+        - Long id
+        - String phoneNumber
+        - Long harassmentCount
+        - Long fraudCount
+        - Long advertisementCount
+        - Date createTime
+        + PhoneMarkerInfo()
+        + PhoneMarkerInfo(String phoneNumber)
+        + PhoneMarkerInfo(Long id, String phoneNumber, Long harassmentCount, Long fraudCount, Long advertisementCount, Date createTime)
+        + void updatePhoneMarkerInfo(String markType)
+        + getters/setters
+    }
+}
+
+package org.example.phonelocatebackend.service {
+    interface PhoneLocationInfoService {
+        + int validPhoneNumber(String phoneNumber)
+        + void cachePhoneLocationInfo(PhoneLocationInfo phoneLocateInfo)
+        + String getLocation(String phoneNumber)
+    }
+
+    interface PhoneOperatorInfoService {
+        + PhoneOperatorEnum getOperator(String phoneTopThreeNumber)
+        + int validPhoneTopThreeNumber(String phoneTopThreeNumber)
+        + void cachePhoneOperatorInfo(PhoneOperatorInfo phoneOperatorInfo)
+    }
+
+    interface PhoneMarkerInfoService {
+        + PhoneMarkerInfo getByPhoneNumber(String phoneNumber)
+        + Long getHarassmentCountByPhoneNumber(String phoneNumber)
+        + Long getFraudCountByPhoneNumber(String phoneNumber)
+        + Long getAdvertisementCountByPhoneNumber(String phoneNumber)
+    }
+}
+
+package org.example.phonelocatebackend.service.impl {
+    class PhoneMarkerInfoServiceImpl {
+            + int validPhoneNumber(String phoneNumber)
+            + void cachePhoneLocationInfo(PhoneLocationInfo phoneLocateInfo)
+            + String getLocation(String phoneNumber)
+    }
+    class PhoneLocationInfoServiceImpl {
+        + PhoneOperatorEnum getOperator(String phoneTopThreeNumber)
+        + int validPhoneTopThreeNumber(String phoneTopThreeNumber)
+        + void cachePhoneOperatorInfo(PhoneOperatorInfo phoneOperatorInfo)
+    }
+    class PhoneOperatorInfoServiceImpl {
+        + PhoneMarkerInfo getByPhoneNumber(String phoneNumber)
+        + Long getHarassmentCountByPhoneNumber(String phoneNumber)
+        + Long getFraudCountByPhoneNumber(String phoneNumber)
+        + Long getAdvertisementCountByPhoneNumber(String phoneNumber)
+    }
+}
+
+package org.example.phonelocatebackend.controller {
+    class PhoneLocationInfoController {
+        - PhoneLocationInfoServiceImpl phoneLocationInfoServiceImpl
+        + BaseResponse<PhoneLocationInfo> getLocation(String phoneNumber)
+    }
+
+    class PhoneOperatorInfoController {
+        - PhoneOperatorInfoServiceImpl phoneOperatorInfoServiceImpl
+        + BaseResponse<String> getOperator(String phoneTopThreeNumber)
+    }
+
+    class PhoneMarkerInfoController {
+        - PhoneMarkerInfoServiceImpl phoneMarkerInfoServiceImpl
+        + PhoneMarkerInfoResponse getMarkerInfo(String phoneNumber)
+        + void updateMarkerInfo(PhoneUpdateMarkerInfoRequest request)
+    }
+}
+
+PhoneLocationInfoController ..> PhoneLocationInfoServiceImpl
+PhoneOperatorInfoController ..> PhoneOperatorInfoServiceImpl
+PhoneMarkerInfoController ..> PhoneMarkerInfoServiceImpl
+
+PhoneMarkerInfoServiceImpl ..|> PhoneMarkerInfoService
+PhoneLocationInfoServiceImpl ..|> PhoneLocationInfoService
+PhoneOperatorInfoServiceImpl ..|> PhoneOperatorInfoService
+
+PhoneMarkerInfoService --> PhoneMarkerInfo
+
+PhoneLocationInfoController --> PhoneLocationInfo
+PhoneOperatorInfoController --> PhoneOperatorInfo
+
+@enduml

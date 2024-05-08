@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.phonelocatebackend.mapper.PhoneMarkerInfoMapper">
+
+    <resultMap id="BaseResultMap" type="org.example.phonelocatebackend.model.entity.PhoneMarkerInfo">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="phoneNumber" column="phone_number" jdbcType="VARCHAR"/>
+            <result property="harassmentCount" column="harassment_count" jdbcType="BIGINT"/>
+            <result property="fraudCount" column="fraud_count" jdbcType="BIGINT"/>
+            <result property="advertisementCount" column="advertisement_count" jdbcType="BIGINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,phone_number,harassment_count,
+        fraud_count,advertisement_count,create_time
+    </sql>
+    <select id="getHarassmentCountByPhoneNumber" resultType="java.lang.Long">
+        SELECT harassment_count FROM phone_marker_info WHERE phone_number = #{phoneNumber}
+    </select>
+
+    <select id="getFraudCountByPhoneNumber" resultType="java.lang.Long">
+        SELECT fraud_count FROM phone_marker_info WHERE phone_number = #{phoneNumber}
+    </select>
+
+    <select id="getAdvertisementCountByPhoneNumber" resultType="java.lang.Long">
+        SELECT advertisement_count FROM phone_marker_info WHERE phone_number = #{phoneNumber}
+    </select>
+    <select id="getByPhoneNumber" resultType="org.example.phonelocatebackend.model.entity.PhoneMarkerInfo">
+        SELECT * FROM phone_marker_info WHERE phone_number = #{phoneNumber}
+    </select>
+
+</mapper>

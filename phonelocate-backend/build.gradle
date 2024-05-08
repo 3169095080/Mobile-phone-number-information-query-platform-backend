@@ -1,0 +1,46 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.17'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'org.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '21'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // 集成 Redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    // 序列化
+    implementation 'com.alibaba:fastjson:1.2.54'
+    // 百度API
+    implementation 'com.baidubce:api-explorer-sdk:1.0.3.1'
+    // 热部署
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+    // 引入Spring Retry库以实现重试功能
+    implementation 'org.springframework.retry:spring-retry:1.3.1'
+    // MySQL
+    implementation 'mysql:mysql-connector-java:8.0.29'
+    // MybatisPlus
+    implementation 'com.baomidou:mybatis-plus-boot-starter:3.0.1'
+    // lombok
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+}
+
+test {
+    ignoreFailures = true
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

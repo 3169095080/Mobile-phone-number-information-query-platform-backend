@@ -1,0 +1,45 @@
+@startuml
+
+actor User as User
+participant Frontend as Frontend
+participant Backend as Backend
+participant RedisCache as RedisCache
+participant Database as Database
+
+User -> Frontend: 输入要查询的手机号
+Frontend -> Backend: 发送 getOperator 请求
+Backend -> RedisCache: 查询 Operator 缓存
+alt 缓存命中
+    RedisCache --> Backend: 返回 Operator 缓存
+    Backend --> Frontend: 返回 Operator 缓存
+else 缓存未命中
+    Backend -> Backend: 调用 getOperator 方法\n获取 phoneNumber 对应的 Operator
+    Backend -> RedisCache: 缓存 Operator
+    RedisCache --> Backend: 确认缓存已保存
+    Backend --> Frontend: 返回 Operator
+end
+
+User -> Frontend: 输入完成手机号并点击查询
+Frontend -> Backend: 发送 getLocation 请求
+Backend -> RedisCache: 查询 Location 缓存
+alt 缓存命中
+    RedisCache --> Backend: 返回 Location 缓存
+    Backend --> Frontend: 返回 Location 缓存
+else 缓存未命中
+    Backend -> Backend: 调用 getLocation 方法\n获取 phoneNumber 对应的 Location
+    Backend -> RedisCache: 缓存 Location
+    RedisCache --> Backend: 确认缓存已保存
+    Backend --> Frontend: 返回 Location
+end
+
+User -> Frontend: 点击标记并选择标记类型
+Frontend -> Backend: 发送 getMarker 请求
+Backend -> Database: 查询 Marker 信息
+Backend --> Frontend: 返回 Marker 信息
+
+User -> Frontend: 输入完成手机号并点击标记
+Frontend -> Backend: 发送 updateMarkerInfo 请求
+Backend -> Database: 更新 Marker 信息
+Backend --> Frontend: 返回更新结果
+
+@enduml

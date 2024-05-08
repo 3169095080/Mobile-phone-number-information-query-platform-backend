@@ -1,0 +1,61 @@
+@startuml
+start
+:用户进入前端页面;
+:用户输入手机号;
+if (输入到第三位？) then (是)
+  :前端发送getOperator请求;
+  if (Operator缓存存在？) then (是)
+    :返回Operator缓存;
+  else (否)
+    :调用phoneOperatorInfoServiceImpl.getOperator;
+    if (成功获取Operator) then (是)
+      :缓存Operator;
+      :返回Operator;
+    else (否)
+      :返回错误消息;
+    endif
+  endif
+else (否)
+endif
+:用户点击查询;
+if (手机号输入完成？) then (是)
+  :前端发送getLocation请求;
+  if (Location缓存存在？) then (是)
+    :返回Location缓存;
+  else (否)
+    :调用phoneLocationInfoServiceImpl.getLocation;
+    if (成功获取Location) then (是)
+      :缓存Location;
+      :返回Location;
+    else (否)
+      :返回错误消息;
+    endif
+  endif
+else (否)
+endif
+stop
+
+start
+:用户进入前端页面;
+:用户输入手机号;
+:用户点击标记;
+:前端提示选择标记类型;
+:用户选择标记类型并确认;
+:前端发送getMarker请求;
+if (成功获取Marker信息) then (是)
+  :返回Marker信息;
+else (否)
+  :返回错误消息;
+endif
+:用户完成手机号输入并点击标记;
+if (选择了标记类型) then (是)
+  :前端发送updateMarkerInfo请求;
+  if (成功更新Marker信息) then (是)
+    :返回更新结果;
+  else (否)
+    :返回错误消息;
+  endif
+else (否)
+endif
+stop
+@enduml

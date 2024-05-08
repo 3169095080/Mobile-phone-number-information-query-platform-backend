@@ -1,0 +1,20 @@
+@startuml
+
+left to right direction
+
+actor User
+
+rectangle "PhoneLocationInfoController" {
+    User --> (getLocation)
+}
+
+rectangle "PhoneOperatorInfoController" {
+    User --> (getOperator)
+}
+
+rectangle "PhoneMarkerInfoController" {
+    User --> (getMarkerInfo)
+    User --> (updateMarkerInfo)
+}
+
+@enduml
